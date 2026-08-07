@@ -1,0 +1,14 @@
+services:
+    db:
+        image: postgres:18.4-alpine3.24
+        container_name: pg_emplyee_container
+        environment:
+            POSTGRES_DB: db_employee
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        ports:
+            - "5555:5432"
+        volumes:
+            - posgres_data:/var/lib/postgresql
+volumes:
+    posgres_data:
