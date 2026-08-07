@@ -40,16 +40,20 @@ class EmployeeController extends Controller
     {
         return ResponseHelper::success($employee, "Retreived Succefully", 200);
     }
-    public function showWithEmail(string $email)
+    public function search(Request $request)
     {
+        $allowed_inputs = ["email", "phone", "status"];
 
-        $empFound = Employee::where("email", $email)->get();
+        $query = Employee::query();
 
-        if ($empFound) {
-            return ResponseHelper::success($empFound, "Retreived Succefully", 200);
-        } else {
-            return ResponseHelper::error(null, "Employee Not found", 400);
+
+        foreach ($allowed_inputs as $input) {
+            if ($request->filled($input)) {
+                $query->where($input, $request->query($input));
+            }
         }
+
+        return $query->get();
     }
 
     /**
