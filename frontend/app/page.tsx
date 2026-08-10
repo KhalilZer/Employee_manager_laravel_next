@@ -1,5 +1,12 @@
-import Image from "next/image";
+import Dashboard from "./components/Dashboard";
+import { fetchALl } from "./services/employee-service";
 
-export default function Home() {
-    return <h1>hello</h1>;
+export default async function Home() {
+    const allEmp = await fetchALl();
+
+    return (
+        <div>
+            <Dashboard allEmp={allEmp.data} />
+        </div>
+    );
 }
