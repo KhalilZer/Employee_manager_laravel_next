@@ -1,13 +1,19 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
 
-Route::get("employees", [EmployeeController::class, "index"]);
-Route::get("employees/search", [EmployeeController::class, "search"]);
-Route::get("employees/{employee}", [EmployeeController::class, "show"]);
-Route::post("employees", [EmployeeController::class, "store"]);
-Route::put("employees/{id}", [EmployeeController::class, "update"]);
+Route::prefix("employees")->group(function () {
+
+    Route::get("/", [EmployeeController::class, "index"]); //Show all 
+    Route::get("/search", [EmployeeController::class, "search"]); //Search by email,phone or Stauts
+    Route::get("/status/{status}", [EmployeeController::class, "showWithStatus"]); //Show by status 1= Actif , 2=OFF , 3= Holidays
+    Route::get("/withDeleted", [EmployeeController::class, "showSoftDeleted"]); // show all records includ softDeleted
+    Route::get("/{employee}", [EmployeeController::class, "show"]); //Show by id
+
+    Route::post("/", [EmployeeController::class, "store"]); // create an Employee
+    Route::put("/{id}", [EmployeeController::class, "update"]); // update an Employee
+    Route::delete("/{employee}", [EmployeeController::class, "destroy"]); //Delete an employee (soft)
+});

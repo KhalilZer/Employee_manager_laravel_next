@@ -7,7 +7,7 @@ class ResponseHelper
     public static function success($data, string $message = "success", int $status = 200)
     {
         return response()->json([
-            "success" => false,
+            "success" => true,
             "data" => $data,
             "message" => $message
         ], $status);
@@ -15,8 +15,7 @@ class ResponseHelper
     public static function error($data = null, string $message = "error", int $status)
     {
         return response()->json([
-            "success" => true,
-
+            "success" => false,
             "data" => $data,
             "message" => $message
         ], $status);

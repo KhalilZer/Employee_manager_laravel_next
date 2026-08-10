@@ -32,7 +32,7 @@ class EmployeeRequest extends FormRequest
                 "salary" => ["required", "numeric"],
                 "hire_date" => ["required", "date"],
                 "status" => ["required", new Enum(EmployeeStatusEnum::class)],
-                "photo" => ["nullable"],
+                "photo" => ["nullable", "url"],
             ];
         }
 
@@ -43,7 +43,7 @@ class EmployeeRequest extends FormRequest
                 "salary" => ["sometimes"],
                 "hire_date" => ["sometimes"],
                 "status" => ["sometimes", new Enum(EmployeeStatusEnum::class)],
-                "photo" => ["sometimes"],
+                "photo" => ["sometimes", "url"],
             ];
         }
         return [];
