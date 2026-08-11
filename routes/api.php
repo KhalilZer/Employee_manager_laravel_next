@@ -9,7 +9,6 @@ Route::prefix("employees")->group(function () {
 
     Route::get("/", [EmployeeController::class, "index"]); //Show all 
     Route::get("/search", [EmployeeController::class, "search"]); //Search by email,phone or Stauts
-    Route::get("/status/{status}", [EmployeeController::class, "showWithStatus"]); //Show by status 1= Actif , 2=OFF , 3= Holidays
     Route::get("/withDeleted", [EmployeeController::class, "showSoftDeleted"]); // show all records includ softDeleted
     Route::get("/{employee}", [EmployeeController::class, "show"]); //Show by id
 

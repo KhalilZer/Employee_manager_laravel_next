@@ -37,7 +37,7 @@ class EmployeeController extends Controller
     }
     public function search(Request $request)
     {
-        $employees = $this->service->search($request->only(["email", "status", "phone"]));
+        $employees = $this->service->search($request->only(["email", "full_name", "status", "sort"]));
         return ResponseHelper::success($employees, "Retreived Succefully", 200);
     }
 
@@ -58,17 +58,5 @@ class EmployeeController extends Controller
     {
         $allEmpWithTrash = $this->service->showSoftDeleted();
         return ResponseHelper::success($allEmpWithTrash, "Retreived Succefully", 200);
-    }
-
-    public function showWithStatus(int $status)
-    {
-        $status = EmployeeStatusEnum::tryFrom($status);
-
-        if ($status) {
-            $foundEmps = $this->service->showWithStatus($status->name);
-            return ResponseHelper::success($foundEmps,  "Retreived Succefully", 200);
-        } else {
-            return ResponseHelper::success(null, "No Employee Found", 400);
-        }
     }
 }

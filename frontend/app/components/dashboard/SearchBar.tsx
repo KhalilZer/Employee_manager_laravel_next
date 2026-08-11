@@ -1,35 +1,35 @@
 "use client";
 
-import { useState } from "react";
-
-const searchBy_fields = [
-    { key: 1, value: "fullname", display: "By FullName" },
-    { key: 2, value: "email", display: "By Email" },
-    { key: 3, value: "status", display: "By Status" },
-];
-
-const order_fields = [
-    { value: "newest", display: "By Newest" },
-    { value: "high_salary", display: "By Heigh Salary" },
-    { value: "min_salary", display: "By Min Salary" },
-];
+import {
+    order_fields,
+    searchBy_fields,
+    status_fields,
+} from "@/constants/search-bar";
 
 type Props = {
-    OnSearchBy: (searchBy: string) => void;
-    onSearch: (input: string) => void;
+    searchBy: string;
+    onSearchBy: (searchBy: string) => void;
+    searchInput: string;
+    onChangeSearchInput: (input: string) => void;
+    searchStatus: number;
+    onChangeStatus: (input: number) => void;
+    onSortChange: (value: number) => void;
 };
 
-const SearchBar = ({ OnSearchBy, onSearch }: Props) => {
-    const [searchBy, setSearchBy] = useState("fullname");
-
-    const handleSearchByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = e.target.value;
-        OnSearchBy(value);
-        setSearchBy(value);
-    };
+const SearchBar = ({
+    searchStatus,
+    onChangeStatus,
+    onChangeSearchInput,
+    onSearchBy,
+    searchBy,
+    onSortChange,
+}: Props) => {
     return (
         <div>
-            <select className="border" onChange={handleSearchByChange}>
+            <select
+                className="border"
+                onChange={(e) => onSearchBy(e.target.value)}
+            >
                 {searchBy_fields.map((field) => {
                     return (
                         <option key={field.key} value={field.value}>
@@ -38,21 +38,24 @@ const SearchBar = ({ OnSearchBy, onSearch }: Props) => {
                     );
                 })}
             </select>
-            {searchBy === "email" || searchBy === "fullname" ? (
-                <input
-                    type={searchBy === "email" ? "email" : "text"}
-                    className="border"
-                    onChange={(e) => onSearch("dsqdqs")}
-                />
-            ) : (
-                <select name="" id="">
-                    <option value="1">Actif</option>
-                    <option value="2">OFF</option>
-                    <option value="3">Holidays</option>
-                </select>
-            )}
 
-            <select name="" id="">
+            <input
+                type={searchBy === "email" ? "email" : "text"}
+                className="border"
+                onChange={(e) => onChangeSearchInput(e.target.value)}
+            />
+
+            <select onChange={(e) => onChangeStatus(Number(e.target.value))}>
+                {status_fields.map((field) => {
+                    return (
+                        <option key={field.value} value={field.value}>
+                            {field.display}
+                        </option>
+                    );
+                })}
+            </select>
+
+            <select onChange={(e) => onSortChange(Number(e.target.value))}>
                 {order_fields.map((field, index) => {
                     return (
                         <option key={index} value={field.value}>
