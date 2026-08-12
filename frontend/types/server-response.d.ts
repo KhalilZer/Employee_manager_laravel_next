@@ -1,5 +1,5 @@
 type serverResponse = {
-    data: IEmployee[];
+    data: IEmployee[] | null;
     success: boolean;
     message: string;
 };

@@ -5,7 +5,7 @@ import TableContent from "./dashboard/TableContent";
 import { searchEmployees } from "../services/employee-service";
 
 type Props = {
-    allEmp: IEmployee[];
+    allEmp: IEmployee[] | null;
 };
 
 const Dashboard = ({ allEmp }: Props) => {
@@ -15,7 +15,9 @@ const Dashboard = ({ allEmp }: Props) => {
     const [sortValue, setSortValue] = useState(1);
 
     const [loading, setLoading] = useState(false);
-    const [listEmployees, setListEmployees] = useState<IEmployee[]>(allEmp);
+    const [listEmployees, setListEmployees] = useState<IEmployee[] | null>(
+        allEmp,
+    );
 
     useEffect(() => {
         fetchSearchEmployee();

@@ -1,5 +1,5 @@
-import Dashboard from "./components/Dashboard";
-import { fetchALlEmployees } from "./services/employee-service";
+import Dashboard from "../components/Dashboard";
+import { fetchALlEmployees } from "../services/employee-service";
 
 export default async function Home() {
     const allEmp = await fetchALlEmployees();
