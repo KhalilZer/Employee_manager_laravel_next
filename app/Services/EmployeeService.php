@@ -39,7 +39,7 @@ class EmployeeService
     public function update(string $id, $data = [])
     {
         $updatedEmp = Employee::findOrFail($id);
-        return $updatedEmp->update([$data]);
+        return $updatedEmp->update($data);
     }
 
     public function destroy(Employee $employee)

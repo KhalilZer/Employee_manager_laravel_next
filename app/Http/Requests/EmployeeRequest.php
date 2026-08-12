@@ -39,7 +39,7 @@ class EmployeeRequest extends FormRequest
         if ($this->isMethod("put") || $this->isMethod("patch")) {
             return [
                 "full_name" => ["sometimes"],
-                "email" => ["sometimes", "email",  Rule::unique("employees")->ignore($this->employee),],
+                "email" => ["sometimes", "email",  Rule::unique("employees")->ignore($this->route("id"))],
                 "salary" => ["sometimes"],
                 "hire_date" => ["sometimes"],
                 "status" => ["sometimes", new Enum(EmployeeStatusEnum::class)],

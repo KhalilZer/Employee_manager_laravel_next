@@ -47,3 +47,39 @@ export const putEmployee = async (
     const empUpdated = await result.json();
     return empUpdated;
 };
+export const craeteEmployee = async (
+    payload: employeeInput,
+): Promise<serverResponse> => {
+    const parseValidation = employeeSchema.safeParse(payload);
+
+    if (!parseValidation.success) {
+        return {
+            data: null,
+            success: false,
+            message: String(parseValidation.error.flatten().fieldErrors),
+        };
+    }
+    const result = await fetch(`${BASE_URL}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(parseValidation.data),
+    });
+
+    const empCreated = await result.json();
+    return empCreated;
+};
+
+export const deleteEmployee = async (id: number): Promise<serverResponse> => {
+    const result = await fetch(`${BASE_URL}/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    const deleted = await result.json();
+
+    return deleted;
+};

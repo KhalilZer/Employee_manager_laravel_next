@@ -71,6 +71,7 @@ const RenderTable = ({ allEmp }: Props) => {
                                 </td>
                                 <td>{emp.deleted_at ? "YES" : "NO"}</td>
                                 <RenderActionButtons
+                                    refreshTable={fetchSearchEmployee}
                                     employeeId={emp.id}
                                     updateEmpClicked={() => {
                                         setUpdateEmployee(true);

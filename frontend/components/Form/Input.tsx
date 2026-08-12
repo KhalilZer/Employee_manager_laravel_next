@@ -9,14 +9,22 @@ type Props = {
     label: string;
     error: FieldError | undefined;
     valueAsNumber?: boolean;
+    isDate?: boolean;
 };
 
-const Input = ({ register, nameField, label, error, valueAsNumber }: Props) => {
+const Input = ({
+    register,
+    nameField,
+    label,
+    error,
+    valueAsNumber,
+    isDate,
+}: Props) => {
     return (
         <div>
             <label htmlFor="">{label}</label>
             <input
-                type="text"
+                type={isDate ? "date" : "text"}
                 {...register(nameField, {
                     valueAsNumber: valueAsNumber ? valueAsNumber : false,
                 })}

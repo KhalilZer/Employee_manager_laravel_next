@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\EmployeeStatusEnum;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Employee;
@@ -41,7 +40,7 @@ class EmployeeController extends Controller
         return ResponseHelper::success($employees, "Retreived Succefully", 200);
     }
 
-    public function update(EmployeeRequest $request, string $id)
+    public function update(EmployeeRequest $request, int $id)
     {
         $updatedEmp = $this->service->update($id,  $request->validated());
         return ResponseHelper::success($updatedEmp, "Updated Succefully", 201);

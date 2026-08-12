@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "./Form/Input";
 import { status_fields } from "@/constants/search-bar";
-import { putEmployee } from "../services/employee-service";
+import { craeteEmployee, putEmployee } from "../services/employee-service";
 import { showToast } from "nextjs-toast-notify";
 
 type Props = {
@@ -20,6 +20,7 @@ const FormUpdateCreate = ({
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm<employeeInput>({
         resolver: zodResolver(employeeSchema),
@@ -58,9 +59,36 @@ const FormUpdateCreate = ({
             });
         }
     };
+    const onSubmitCreate: SubmitHandler<employeeInput> = async (data) => {
+        const createdEmp = await craeteEmployee(data);
+        if (createdEmp.success) {
+            showToast.success(createdEmp.message, {
+                duration: 4000,
+                progress: true,
+                position: "top-right",
+                transition: "bounceIn",
+                icon: "",
+                sound: true,
+            });
+            reset();
+        } else {
+            showToast.error(createdEmp.message, {
+                duration: 4000,
+                progress: true,
+                position: "top-right",
+                transition: "bounceIn",
+                icon: "",
+                sound: true,
+            });
+        }
+    };
     return (
         <div>
-            <form onSubmit={handleSubmit(onSubmitUpdate)}>
+            <form
+                onSubmit={handleSubmit(
+                    employeToUpdate ? onSubmitUpdate : onSubmitCreate,
+                )}
+            >
                 <Input
                     label="FullName"
                     nameField="full_name"
@@ -111,8 +139,11 @@ const FormUpdateCreate = ({
                     nameField="hire_date"
                     register={register}
                     error={errors.hire_date}
+                    isDate
                 />
-                <button type="submit">Update Employee</button>
+                <button type="submit">
+                    {employeToUpdate ? "Update Employee" : "Create Employee"}
+                </button>
             </form>
         </div>
     );

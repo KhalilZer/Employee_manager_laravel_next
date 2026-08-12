@@ -1,17 +1,49 @@
+import { deleteEmployee } from "@/services/employee-service";
 import { Delete, Eye, UserPlus } from "@deemlol/next-icons";
+import { showToast } from "nextjs-toast-notify";
 
 type Props = {
     employeeId: number;
-    updateEmpClicked: () => void;
+    updateEmpClicked?: () => void;
+    refreshTable?: () => void;
 };
-const RenderActionButtons = ({ employeeId, updateEmpClicked }: Props) => {
+
+const RenderActionButtons = ({
+    updateEmpClicked,
+    employeeId,
+    refreshTable,
+}: Props) => {
+    const deleteEmp = async () => {
+        const deleted = await deleteEmployee(employeeId);
+        if (deleted.success) {
+            showToast.success(deleted.message, {
+                duration: 4000,
+                progress: true,
+                position: "top-right",
+                transition: "bounceIn",
+                icon: "",
+                sound: true,
+            });
+            refreshTable && refreshTable();
+        } else {
+            showToast.error(deleted.message, {
+                duration: 4000,
+                progress: true,
+                position: "top-right",
+                transition: "bounceIn",
+                icon: "",
+                sound: true,
+            });
+        }
+    };
+
     return (
         <td>
             <button>
                 <UserPlus onClick={updateEmpClicked} />
             </button>
             <button>
-                <Delete />
+                <Delete onClick={deleteEmp} />
             </button>
             <button>
                 <Eye />
