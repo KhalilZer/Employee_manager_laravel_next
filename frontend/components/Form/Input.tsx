@@ -1,11 +1,15 @@
 "use client";
-import { EmployeeInput } from "@/validators/employee-schema";
-import { FieldError, Path, UseFormRegister } from "react-hook-form";
+import {
+    FieldError,
+    FieldValues,
+    Path,
+    UseFormRegister,
+} from "react-hook-form";
 import { ReactNode } from "react";
 
-type Props = {
-    register: UseFormRegister<EmployeeInput>;
-    nameField: Path<EmployeeInput>;
+type Props<T extends FieldValues> = {
+    register: UseFormRegister<T>;
+    nameField: Path<T>;
     label: string;
     error: FieldError | undefined;
     valueAsNumber?: boolean;
@@ -13,7 +17,7 @@ type Props = {
     icon?: ReactNode;
 };
 
-const Input = ({
+const Input = <T extends FieldValues>({
     register,
     nameField,
     label,
@@ -21,7 +25,7 @@ const Input = ({
     valueAsNumber,
     isDate,
     icon,
-}: Props) => {
+}: Props<T>) => {
     return (
         <div className="space-y-2">
             <label
