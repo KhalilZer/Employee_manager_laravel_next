@@ -48,7 +48,7 @@ const RenderTable = ({ allEmp }: Props) => {
                         <th className="px-4 py-4 font-bold">Status</th>
                         <th className="px-4 py-4 font-bold">Photo</th>
                         <th className="px-4 py-4 font-bold">Created At</th>
-                        <th className="px-4 py-4 font-bold">Deleted ?</th>
+                        <th className="px-4 py-4 font-bold">Deleted?</th>
                         <th className="px-4 py-4 font-bold">Actions</th>
                     </tr>
                 </thead>

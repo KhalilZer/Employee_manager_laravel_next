@@ -101,21 +101,21 @@ const FormUpdateCreate = ({
             >
                 <Input
                     icon={<User size={18} />}
-                    label="FullName"
+                    label="Full name"
                     nameField="full_name"
                     register={register}
                     error={errors.full_name}
                 />
                 <Input
                     icon={<Mail size={18} />}
-                    label="email"
+                    label="Email"
                     nameField="email"
                     register={register}
                     error={errors.email}
                 />
                 <Input
                     icon={<Dollar size={18} />}
-                    label="salary"
+                    label="Salary"
                     nameField="salary"
                     register={register}
                     error={errors.salary}
@@ -123,7 +123,7 @@ const FormUpdateCreate = ({
                 />{" "}
                 <Input
                     icon={<Image size={18} />}
-                    label="photo"
+                    label="Photo URL"
                     nameField="photo"
                     register={register}
                     error={errors.photo}

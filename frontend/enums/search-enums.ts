@@ -1,6 +1,6 @@
 export enum SearchStatusEnum {
     ALL = 0,
-    ACTIF = 1,
+    ACTIVE = 1,
     OFF = 2,
     HOLIDAYS = 3,
 }

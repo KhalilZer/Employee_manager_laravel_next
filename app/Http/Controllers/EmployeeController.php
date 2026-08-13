@@ -18,43 +18,43 @@ class EmployeeController extends Controller
     public function index()
     {
         $allEmp = $this->service->fetchAll();
-        return ResponseHelper::success($allEmp, "Retreived Succefully", 200);
+        return ResponseHelper::success($allEmp, "Employees retrieved successfully", 200);
     }
 
 
     public function store(EmployeeRequest $request)
     {
         $createdEmp = $this->service->create($request->validated());
-        return ResponseHelper::success($createdEmp, "Created Succefully", 201);
+        return ResponseHelper::success($createdEmp, "Employee created successfully", 201);
     }
 
 
     public function show(Employee $employee)
     {
-        return ResponseHelper::success($employee, "Retreived Succefully", 200);
+        return ResponseHelper::success($employee, "Employee retrieved successfully", 200);
     }
     public function search(Request $request)
     {
         $employees = $this->service->search($request->only(["email", "full_name", "status", "sort"]));
-        return ResponseHelper::success($employees, "Retreived Succefully", 200);
+        return ResponseHelper::success($employees, "Employees retrieved successfully", 200);
     }
 
     public function update(EmployeeRequest $request, int $id)
     {
         $updatedEmp = $this->service->update($id,  $request->validated());
-        return ResponseHelper::success($updatedEmp, "Updated Succefully", 201);
+        return ResponseHelper::success($updatedEmp, "Employee updated successfully", 201);
     }
 
 
     public function destroy(Employee $employee)
     {
         $this->service->destroy($employee);
-        return ResponseHelper::success(null,  "Deleted Succefully", 200);
+        return ResponseHelper::success(null,  "Employee deleted successfully", 200);
     }
 
     public function showSoftDeleted()
     {
         $allEmpWithTrash = $this->service->showSoftDeleted();
-        return ResponseHelper::success($allEmpWithTrash, "Retreived Succefully", 200);
+        return ResponseHelper::success($allEmpWithTrash, "Employees retrieved successfully", 200);
     }
 }

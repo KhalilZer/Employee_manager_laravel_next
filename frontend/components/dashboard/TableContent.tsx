@@ -9,7 +9,7 @@ const TableContent = ({ allEmp }: Props) => {
             {allEmp?.length ? (
                 <RenderTable allEmp={allEmp} />
             ) : (
-                <h1 className="px-6 py-24 text-center text-lg font-semibold text-slate-500">No Employee Found</h1>
+                <h1 className="px-6 py-24 text-center text-lg font-semibold text-slate-500">No employees found</h1>
             )}
         </div>
     );
