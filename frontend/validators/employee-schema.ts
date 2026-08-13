@@ -9,4 +9,4 @@ export const employeeSchema = z.object({
     photo: z.string().url("Please enter a valid photo URL"),
 });
 
-export type employeeInput = z.infer<typeof employeeSchema>;
+export type EmployeeInput = z.infer<typeof employeeSchema>;

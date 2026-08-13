@@ -2,7 +2,7 @@
 import { useState } from "react";
 import RenderActionButtons from "./RenderActionButtons";
 import { SubmitHandler } from "react-hook-form";
-import { employeeInput } from "@/validators/employee-schema";
+import { EmployeeInput } from "@/validators/employee-schema";
 import { fetchALlEmployees, putEmployee } from "@/services/employee-service";
 import FormUpdateCreate from "../form/FormUpdateCreate";
 import Image from "next/image";

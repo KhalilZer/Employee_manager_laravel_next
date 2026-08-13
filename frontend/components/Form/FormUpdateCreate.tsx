@@ -1,5 +1,5 @@
 "use client";
-import { employeeInput, employeeSchema } from "@/validators/employee-schema";
+import { EmployeeInput, employeeSchema } from "@/validators/employee-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { status_fields } from "@/constants/search-bar";
@@ -25,7 +25,7 @@ const FormUpdateCreate = ({
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<employeeInput>({
+    } = useForm<EmployeeInput>({
         resolver: zodResolver(employeeSchema),
         defaultValues: {
             full_name: employeToUpdate?.full_name,
@@ -37,7 +37,7 @@ const FormUpdateCreate = ({
         },
     });
 
-    const onSubmitUpdate: SubmitHandler<employeeInput> = async (data) => {
+    const onSubmitUpdate: SubmitHandler<EmployeeInput> = async (data) => {
         setLoading(true);
         const updatedEmp = await putEmployee(employeToUpdate?.id, data);
         if (updatedEmp.success) {
@@ -64,7 +64,7 @@ const FormUpdateCreate = ({
         }
         setLoading(false);
     };
-    const onSubmitCreate: SubmitHandler<employeeInput> = async (data) => {
+    const onSubmitCreate: SubmitHandler<EmployeeInput> = async (data) => {
         setLoading(true);
 
         const createdEmp = await craeteEmployee(data);
