@@ -39,15 +39,15 @@ const RenderActionButtons = ({
     };
 
     return (
-        <td>
-            <button>
+        <td className="whitespace-nowrap px-4 py-4">
+            <button className="mr-2 inline-flex size-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-indigo-600 shadow-sm hover:border-indigo-200 hover:bg-indigo-50">
                 <UserPlus onClick={updateEmpClicked} />
             </button>
-            <button>
+            <button className="mr-2 inline-flex size-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-rose-600 shadow-sm hover:border-rose-200 hover:bg-rose-50">
                 <Delete onClick={deleteEmp} />
             </button>
-            <button>
-                <Link href={`/employee-details/${employeeId}`}>
+            <button className="inline-flex size-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-sky-600 shadow-sm hover:border-sky-200 hover:bg-sky-50">
+                <Link href={`/employee-details/${employeeId}`} className="inline-flex size-full items-center justify-center">
                     <Eye />
                 </Link>
             </button>

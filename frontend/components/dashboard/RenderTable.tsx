@@ -5,6 +5,8 @@ import { SubmitHandler } from "react-hook-form";
 import { employeeInput } from "@/validators/employee-schema";
 import { fetchALlEmployees, putEmployee } from "@/services/employee-service";
 import FormUpdateCreate from "../form/FormUpdateCreate";
+import Image from "next/image";
+import Modal from "../Modal";
 type Props = {
     allEmp: IEmployee[];
 };
@@ -24,52 +26,74 @@ const RenderTable = ({ allEmp }: Props) => {
         setListEmployees(allEmp.data);
     };
     return (
-        <div>
+        <div className="overflow-x-auto">
             {updateEmployee && (
-                <FormUpdateCreate
-                    setUpdateEmployee={setUpdateEmployee}
-                    employeToUpdate={employeeToUpdate}
-                    refreshTable={fetchSearchEmployee}
-                />
+                <Modal onClose={() => setUpdateEmployee(false)}>
+                    <FormUpdateCreate
+                        setUpdateEmployee={setUpdateEmployee}
+                        employeToUpdate={employeeToUpdate}
+                        refreshTable={fetchSearchEmployee}
+                    />
+                </Modal>
             )}
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Salary</th>
-                        <th>Hire Date</th>
-                        <th>Status</th>
-                        <th>Photo</th>
-                        <th>Created At</th>
-                        <th>Deleted ?</th>
-                        <th>Actions</th>
+            <table className="w-full min-w-[1100px] border-collapse text-left text-sm">
+                <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+                    <tr className="divide-x divide-slate-100">
+                        <th className="px-4 py-4 font-bold">ID</th>
+                        <th className="px-4 py-4 font-bold">Full Name</th>
+                        <th className="px-4 py-4 font-bold">Email</th>
+                        <th className="px-4 py-4 font-bold">Salary</th>
+                        <th className="px-4 py-4 font-bold">Hire Date</th>
+                        <th className="px-4 py-4 font-bold">Status</th>
+                        <th className="px-4 py-4 font-bold">Photo</th>
+                        <th className="px-4 py-4 font-bold">Created At</th>
+                        <th className="px-4 py-4 font-bold">Deleted ?</th>
+                        <th className="px-4 py-4 font-bold">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-slate-100 bg-white">
                     {listEmployees?.map((emp) => {
                         return (
-                            <tr key={emp.id}>
-                                <td>{emp.id}</td>
+                            <tr
+                                key={emp.id}
+                                className="text-slate-600 transition-colors hover:bg-indigo-50/50"
+                            >
+                                <td className="px-4 py-4 font-mono text-xs text-slate-400">
+                                    {emp.id}
+                                </td>
 
-                                <td>{emp.full_name}</td>
-                                <td>{emp.email}</td>
-                                <td>{emp.salary}</td>
-                                <td>
+                                <td className="whitespace-nowrap px-4 py-4 font-semibold text-slate-900">
+                                    {emp.full_name}
+                                </td>
+                                <td className="px-4 py-4">{emp.email}</td>
+                                <td className="whitespace-nowrap px-4 py-4 font-medium">
+                                    {emp.salary}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
                                     {new Date(emp.hire_date).toLocaleDateString(
                                         "FR-fr",
                                     )}
                                 </td>
-                                <td>{emp.status}</td>
-                                <td>{emp.photo}</td>
-                                <td>
+                                <td className="px-4 py-4 font-medium text-emerald-600">
+                                    {emp.status}
+                                </td>
+                                <td className="max-w-36 truncate px-4 py-4 text-xs text-slate-400">
+                                    <Image
+                                        src={emp.photo}
+                                        alt={emp.full_name}
+                                        height={30}
+                                        width={30}
+                                    />
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
                                     {new Date(
                                         emp.created_at,
                                     ).toLocaleDateString("FR-fr")}
                                 </td>
-                                <td>{emp.deleted_at ? "YES" : "NO"}</td>
+                                <td className="px-4 py-4 font-semibold text-slate-500">
+                                    {emp.deleted_at ? "YES" : "NO"}
+                                </td>
                                 <RenderActionButtons
                                     refreshTable={fetchSearchEmployee}
                                     employeeId={emp.id}

@@ -5,11 +5,11 @@ type Props = {
 };
 const TableContent = ({ allEmp }: Props) => {
     return (
-        <div>
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
             {allEmp?.length ? (
                 <RenderTable allEmp={allEmp} />
             ) : (
-                <h1>No Employee Found</h1>
+                <h1 className="px-6 py-24 text-center text-lg font-semibold text-slate-500">No Employee Found</h1>
             )}
         </div>
     );
