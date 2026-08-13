@@ -1,36 +1,146 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Employees Management Frontend
+
+A modern employee management dashboard built with Next.js and TypeScript. It consumes the Laravel Employees API and provides a responsive interface for browsing and managing employee records.
+
+## Features
+
+- Responsive employee dashboard
+- Employee table with key employment information
+- Live search by full name or email
+- Employee status filtering
+- Sorting by newest record, highest salary, or lowest salary
+- Create employee form
+- Update employees from a modal interface
+- Employee detail pages
+- Soft-delete actions
+- Client-side form validation
+- Success and error toast notifications
+- Optimized remote employee images
+- Responsive Tailwind CSS interface with accessible focus states
+
+## Tech Stack
+
+- Next.js 16 with the App Router
+- React 19
+- TypeScript 5
+- Tailwind CSS 4
+- React Hook Form
+- Zod
+- `@hookform/resolvers`
+- `nextjs-toast-notify`
+- `@deemlol/next-icons`
+- Next.js Image Optimization
+- ESLint 9
+
+## Project Structure
+
+```text
+app/
+├── create-employee/           Create employee page
+├── employee-details/[id]/     Dynamic employee details page
+├── globals.css                Global visual system
+├── layout.tsx                 Root application layout
+└── page.tsx                   Dashboard page
+
+components/
+├── dashboard/                 Search, table, and row actions
+├── form/                      Reusable employee form controls
+├── Dashboard.tsx
+├── EmployeeDetails.tsx
+├── Modal.tsx
+└── Navbar.tsx
+
+services/employee-service.tsx  Laravel API integration
+validators/employee-schema.ts  Zod validation schema
+constants/                     Filter and sorting options
+enums/                         Employee UI enums
+types/                         Shared TypeScript declarations
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20 or later
+- npm
+- The Laravel backend running locally or on a reachable server
+
+### Installation
+
+From the repository root:
+
+```bash
+cd frontend
+npm install
+```
+
+Create a `.env.local` file:
+
+```env
+NEXT_PUBLIC_BASE_URL=http://localhost:8000/api/employees
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Next.js development server |
+| `npm run build` | Create an optimized production build |
+| `npm run start` | Start the production server |
+| `npm run lint` | Run ESLint checks |
 
-## Learn More
+## Application Routes
 
-To learn more about Next.js, take a look at the following resources:
+| Route | Description |
+| --- | --- |
+| `/` | Employee dashboard with search, filters, sorting, and actions |
+| `/create-employee` | Create a new employee |
+| `/employee-details/[id]` | View a single employee's details |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Form Validation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Employee forms are managed with React Hook Form and validated with Zod. The client validates:
 
-## Deploy on Vercel
+- Full name length
+- Email format
+- Numeric salary
+- Valid hire date
+- Employee status
+- Valid photo URL
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The Laravel API performs server-side validation as the final source of truth.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API Integration
+
+The frontend reads the API base URL from:
+
+```env
+NEXT_PUBLIC_BASE_URL=http://localhost:8000/api/employees
+```
+
+The service layer provides functions for listing, searching, creating, updating, viewing, and deleting employees. API responses use a shared generic TypeScript response type.
+
+## Production Build
+
+```bash
+npm run build
+npm run start
+```
+
+Remote images are currently configured for `images.unsplash.com`. Add any additional production image hosts to `next.config.ts` before deployment.
+
+## Backend
+
+The Laravel API lives in the repository root. See the [backend README](../README.md) for endpoints, data fields, database setup, and backend commands.
+
+## License
+
+This project is open-source software licensed under the [MIT License](https://opensource.org/licenses/MIT).

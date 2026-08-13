@@ -1,58 +1,173 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Employees Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A RESTful employee management API built with Laravel. It provides a clean backend for creating, browsing, searching, updating, and soft-deleting employee records. A Next.js client is included in the [`frontend`](./frontend) directory.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Create and validate employee records
+- List all active employee records
+- Retrieve a single employee by ID
+- Update existing employee information
+- Soft-delete employees without permanently removing their data
+- Retrieve records including soft-deleted employees
+- Search employees by full name or email
+- Filter employees by status
+- Sort employees by creation date or salary
+- Consistent JSON response structure
+- Service-layer architecture to keep controllers focused
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.3+
+- Laravel 13
+- Laravel Eloquent ORM
+- Laravel Form Requests
+- PHP enums for employee statuses
+- Laravel Sanctum
+- PHPUnit 12
+- Laravel Pint
+- SQLite by default, with support for other Laravel-compatible databases
 
-## Learning Laravel
+## Project Structure
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```text
+app/
+├── Enums/EmployeeStatusEnum.php
+├── Helpers/ResponseHelper.php
+├── Http/
+│   ├── Controllers/EmployeeController.php
+│   └── Requests/EmployeeRequest.php
+├── Models/Employee.php
+└── Services/EmployeeService.php
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+database/migrations/       Database schema
+routes/api.php             Employee API routes
+frontend/                  Next.js web client
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Employee Data Model
 
-## Contributing
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | Integer | Auto-generated identifier |
+| `full_name` | String | Employee's full name |
+| `email` | String | Unique email address |
+| `salary` | Number | Employee salary |
+| `hire_date` | Date | Employment start date |
+| `status` | Integer | `1` Active, `2` Off, `3` Holidays |
+| `photo` | String/null | URL of the employee photo |
+| `created_at` | Timestamp | Record creation date |
+| `updated_at` | Timestamp | Last update date |
+| `deleted_at` | Timestamp/null | Soft-delete date |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## API Endpoints
 
-## Code of Conduct
+All endpoints are prefixed with `/api/employees`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/api/employees` | List employees |
+| `GET` | `/api/employees/search` | Search, filter, and sort employees |
+| `GET` | `/api/employees/withDeleted` | List employees including soft-deleted records |
+| `GET` | `/api/employees/{id}` | Retrieve one employee |
+| `POST` | `/api/employees` | Create an employee |
+| `PUT` | `/api/employees/{id}` | Update an employee |
+| `DELETE` | `/api/employees/{id}` | Soft-delete an employee |
 
-## Security Vulnerabilities
+### Search Parameters
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+The search endpoint accepts the following query parameters:
+
+| Parameter | Values | Description |
+| --- | --- | --- |
+| `full_name` | String | Match names beginning with the supplied value |
+| `email` | String | Match emails beginning with the supplied value |
+| `status` | `0`, `1`, `2`, `3` | All, Active, Off, or Holidays |
+| `sort` | `1`, `2`, `3` | Newest, highest salary, or lowest salary |
+
+Example:
+
+```http
+GET /api/employees/search?full_name=John&status=1&sort=2
+```
+
+### Response Format
+
+Successful requests use a consistent response envelope:
+
+```json
+{
+  "success": true,
+  "data": {},
+  "message": "Retrieved successfully"
+}
+```
+
+## Getting Started
+
+### Prerequisites
+
+- PHP 8.3 or later
+- Composer
+- A supported database such as SQLite or MySQL
+- Node.js and npm if you also want to run the frontend
+
+### Backend Installation
+
+```bash
+git clone <repository-url>
+cd employees_project_BE
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+Configure the database variables in `.env`, then run:
+
+```bash
+php artisan migrate
+php artisan serve
+```
+
+The backend is available by default at `http://localhost:8000`, with employee endpoints under `http://localhost:8000/api/employees`.
+
+### Run the Frontend
+
+```bash
+cd frontend
+npm install
+cp .env.example .env.local
+npm run dev
+```
+
+If `frontend/.env.example` is not present, create `frontend/.env.local` with:
+
+```env
+NEXT_PUBLIC_BASE_URL=http://localhost:8000/api/employees
+```
+
+Open `http://localhost:3000` in your browser. Full frontend documentation is available in [`frontend/README.md`](./frontend/README.md).
+
+## Development Commands
+
+```bash
+# Run the backend
+php artisan serve
+
+# Run automated tests
+composer test
+
+# Format PHP code
+./vendor/bin/pint
+
+# Clear Laravel caches
+php artisan optimize:clear
+```
+
+## Architecture
+
+The API separates responsibilities across a controller, form request, service, model, enum, and response helper. Controllers handle HTTP input and output, the service contains employee operations and query building, and Eloquent manages persistence and soft deletion.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source software licensed under the [MIT License](https://opensource.org/licenses/MIT).
