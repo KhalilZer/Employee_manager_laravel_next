@@ -131,6 +131,75 @@ php artisan serve
 
 The backend is available by default at `http://localhost:8000`, with employee endpoints under `http://localhost:8000/api/employees`.
 
+## Docker Setup
+
+The repository includes a [`docker-compose.yaml`](./docker-compose.yaml) file for running the PostgreSQL database. The Laravel backend and Next.js frontend run directly on the host machine and are not currently containerized.
+
+### Docker Services
+
+| Service | Image | Container | Host Port | Container Port |
+| --- | --- | --- | --- | --- |
+| PostgreSQL | `postgres:18.4-alpine3.24` | `pg_emplyee_container` | `5555` | `5432` |
+
+The database uses the following development credentials:
+
+| Variable | Value |
+| --- | --- |
+| Database | `db_employee` |
+| Username | `postgres` |
+| Password | `postgres` |
+
+These credentials are intended for local development only and should be replaced with secure values in a production environment.
+
+### Start PostgreSQL
+
+Make sure Docker Desktop or the Docker Engine is running, then execute:
+
+```bash
+docker compose up -d
+```
+
+Configure the Laravel `.env` file to connect to the container through its published host port:
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5555
+DB_DATABASE=db_employee
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+```
+
+Run the database migrations after the container is ready:
+
+```bash
+php artisan migrate
+```
+
+You can then start the backend normally:
+
+```bash
+php artisan serve
+```
+
+### Useful Docker Commands
+
+```bash
+# View running services
+docker compose ps
+
+# Follow PostgreSQL logs
+docker compose logs -f db
+
+# Stop and remove the container
+docker compose down
+
+# Stop the container and permanently remove its database volume
+docker compose down -v
+```
+
+PostgreSQL data is persisted in the named `posgres_data` Docker volume. The `docker compose down -v` command deletes that volume and all stored development data, so use it carefully.
+
 ### Run the Frontend
 
 ```bash

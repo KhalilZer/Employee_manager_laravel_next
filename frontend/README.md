@@ -88,6 +88,24 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Docker
+
+Docker Compose is configured at the repository root to run the PostgreSQL database used by Laravel. The frontend itself is not containerized and continues to run locally with `npm run dev`.
+
+From the repository root, start PostgreSQL with:
+
+```bash
+docker compose up -d
+```
+
+Next, start Laravel on port `8000`, then run the frontend from this directory. The frontend connects to Laravel through:
+
+```env
+NEXT_PUBLIC_BASE_URL=http://localhost:8000/api/employees
+```
+
+See the [backend Docker setup](../README.md#docker-setup) for PostgreSQL credentials, Laravel database variables, persistence, and Docker management commands.
+
 ## Available Scripts
 
 | Command | Description |
