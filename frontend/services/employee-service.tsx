@@ -2,7 +2,9 @@ import { employeeInput, employeeSchema } from "@/validators/employee-schema";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-export const fetchALlEmployees = async (): Promise<serverResponse> => {
+export const fetchALlEmployees = async (): Promise<
+    serverResponse<IEmployee[]>
+> => {
     const result = await fetch(`${BASE_URL}`);
     const allEmp = await result.json();
     return allEmp;
@@ -11,7 +13,7 @@ export const fetchALlEmployees = async (): Promise<serverResponse> => {
 export const searchEmployees = async (
     keyParam: string[],
     valueParam: (string | number)[],
-): Promise<serverResponse> => {
+): Promise<serverResponse<IEmployee[]>> => {
     const params = new URLSearchParams();
 
     keyParam.forEach((key, index) => {
@@ -26,7 +28,7 @@ export const searchEmployees = async (
 export const putEmployee = async (
     id: number | undefined,
     payload: employeeInput,
-): Promise<serverResponse> => {
+): Promise<serverResponse<IEmployee | null>> => {
     const parseValidation = employeeSchema.safeParse(payload);
 
     if (!parseValidation.success) {
@@ -49,7 +51,7 @@ export const putEmployee = async (
 };
 export const craeteEmployee = async (
     payload: employeeInput,
-): Promise<serverResponse> => {
+): Promise<serverResponse<IEmployee | null>> => {
     const parseValidation = employeeSchema.safeParse(payload);
 
     if (!parseValidation.success) {
@@ -71,7 +73,9 @@ export const craeteEmployee = async (
     return empCreated;
 };
 
-export const deleteEmployee = async (id: number): Promise<serverResponse> => {
+export const deleteEmployee = async (
+    id: number,
+): Promise<serverResponse<IEmployee>> => {
     const result = await fetch(`${BASE_URL}/${id}`, {
         method: "DELETE",
         headers: {
@@ -82,4 +86,12 @@ export const deleteEmployee = async (id: number): Promise<serverResponse> => {
     const deleted = await result.json();
 
     return deleted;
+};
+
+export const showEmployee = async (
+    id: number,
+): Promise<serverResponse<IEmployee>> => {
+    const result = await fetch(`${BASE_URL}/${id}`);
+    const emp = await result.json();
+    return emp;
 };

@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,6 +15,22 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         //
+    })
+
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->shouldRenderJsonWhen(
+            fn(Request $request) => $request->is('api/*')
+        );
+        $exceptions->render(function (
+            NotFoundHttpException $e,
+            Request $request
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Resource not found',
+                'data' => null,
+            ], 404);
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

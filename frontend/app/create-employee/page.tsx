@@ -1,4 +1,4 @@
-import FormUpdateCreate from "@/components/FormUpdateCreate";
+import FormUpdateCreate from "@/components/form/FormUpdateCreate";
 import React from "react";
 
 const Createpage = () => {

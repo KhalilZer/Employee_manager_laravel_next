@@ -1,5 +1,6 @@
 import { deleteEmployee } from "@/services/employee-service";
 import { Delete, Eye, UserPlus } from "@deemlol/next-icons";
+import Link from "next/link";
 import { showToast } from "nextjs-toast-notify";
 
 type Props = {
@@ -46,7 +47,9 @@ const RenderActionButtons = ({
                 <Delete onClick={deleteEmp} />
             </button>
             <button>
-                <Eye />
+                <Link href={`/employee-details/${employeeId}`}>
+                    <Eye />
+                </Link>
             </button>
         </td>
     );

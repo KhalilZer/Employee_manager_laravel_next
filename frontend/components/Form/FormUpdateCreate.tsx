@@ -2,10 +2,11 @@
 import { employeeInput, employeeSchema } from "@/validators/employee-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Input from "./Form/Input";
 import { status_fields } from "@/constants/search-bar";
-import { craeteEmployee, putEmployee } from "../services/employee-service";
 import { showToast } from "nextjs-toast-notify";
+import { craeteEmployee, putEmployee } from "@/services/employee-service";
+import Input from "./Input";
+import { useState } from "react";
 
 type Props = {
     employeToUpdate?: IEmployee | null;
@@ -17,6 +18,7 @@ const FormUpdateCreate = ({
     refreshTable,
     setUpdateEmployee,
 }: Props) => {
+    const [loadding, setLoading] = useState(false);
     const {
         register,
         handleSubmit,
@@ -35,6 +37,7 @@ const FormUpdateCreate = ({
     });
 
     const onSubmitUpdate: SubmitHandler<employeeInput> = async (data) => {
+        setLoading(true);
         const updatedEmp = await putEmployee(employeToUpdate?.id, data);
         if (updatedEmp.success) {
             showToast.success(updatedEmp.message, {
@@ -58,8 +61,11 @@ const FormUpdateCreate = ({
                 sound: true,
             });
         }
+        setLoading(false);
     };
     const onSubmitCreate: SubmitHandler<employeeInput> = async (data) => {
+        setLoading(true);
+
         const createdEmp = await craeteEmployee(data);
         if (createdEmp.success) {
             showToast.success(createdEmp.message, {
@@ -81,9 +87,11 @@ const FormUpdateCreate = ({
                 sound: true,
             });
         }
+        setLoading(false);
     };
     return (
         <div>
+            {loadding && <h1>Loading...</h1>}
             <form
                 onSubmit={handleSubmit(
                     employeToUpdate ? onSubmitUpdate : onSubmitCreate,

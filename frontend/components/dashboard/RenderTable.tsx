@@ -4,7 +4,7 @@ import RenderActionButtons from "./RenderActionButtons";
 import { SubmitHandler } from "react-hook-form";
 import { employeeInput } from "@/validators/employee-schema";
 import { fetchALlEmployees, putEmployee } from "@/services/employee-service";
-import FormUpdateCreate from "../FormUpdateCreate";
+import FormUpdateCreate from "../form/FormUpdateCreate";
 type Props = {
     allEmp: IEmployee[];
 };

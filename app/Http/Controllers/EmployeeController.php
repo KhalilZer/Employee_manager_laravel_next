@@ -24,7 +24,6 @@ class EmployeeController extends Controller
 
     public function store(EmployeeRequest $request)
     {
-
         $createdEmp = $this->service->create($request->validated());
         return ResponseHelper::success($createdEmp, "Created Succefully", 201);
     }
