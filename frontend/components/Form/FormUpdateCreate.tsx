@@ -148,17 +148,24 @@ const FormUpdateCreate = ({
                         className="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-slate-50 py-2 pl-11 pr-4 text-sm font-normal text-slate-800 outline-none hover:border-slate-300 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100"
                         {...register("status", { valueAsNumber: true })}
                     >
-                        {status_fields.map((status) => {
+                        {status_fields.map((status, index) => {
                             if (status.value != 0) {
                                 if (employeToUpdate?.status === status.value) {
                                     return (
-                                        <option value={status.value} selected>
+                                        <option
+                                            key={index}
+                                            value={status.value}
+                                            selected
+                                        >
                                             {status.display}
                                         </option>
                                     );
                                 } else {
                                     return (
-                                        <option value={status.value}>
+                                        <option
+                                            key={index}
+                                            value={status.value}
+                                        >
                                             {status.display}
                                         </option>
                                     );
