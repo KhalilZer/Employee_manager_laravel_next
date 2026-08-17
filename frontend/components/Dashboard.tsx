@@ -20,18 +20,20 @@ const Dashboard = ({ allEmp }: Props) => {
     );
 
     useEffect(() => {
-        fetchSearchEmployee();
-    }, [searchBy, searchInput, searchStatus.toString(), sortValue.toString()]);
+        const fetchEmployees = async () => {
+            setLoading(true);
 
-    const fetchSearchEmployee = async () => {
-        setLoading(true);
-        const fetchedEmployees = await searchEmployees(
-            [searchBy, "status", "sort"],
-            [searchInput, searchStatus, sortValue],
-        );
-        setLoading(false);
-        setListEmployees(fetchedEmployees.data);
-    };
+            const result = await searchEmployees(
+                [searchBy, "status", "sort"],
+                [searchInput, searchStatus, sortValue],
+            );
+
+            setListEmployees(result.data);
+            setLoading(false);
+        };
+
+        fetchEmployees();
+    }, [searchBy, searchInput, searchStatus, sortValue]);
 
     return (
         <div className="space-y-6">
@@ -45,7 +47,9 @@ const Dashboard = ({ allEmp }: Props) => {
                 onSortChange={setSortValue}
             />
             {loading ? (
-                <h1 className="rounded-2xl border border-slate-200 bg-white px-6 py-24 text-center text-base font-semibold text-indigo-600 shadow-sm animate-pulse">Loading...</h1>
+                <h1 className="rounded-2xl border border-slate-200 bg-white px-6 py-24 text-center text-base font-semibold text-indigo-600 shadow-sm animate-pulse">
+                    Loading...
+                </h1>
             ) : (
                 <TableContent allEmp={listEmployees} />
             )}

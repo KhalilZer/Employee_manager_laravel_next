@@ -1,0 +1,552 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Employees API",
+        "description": "REST API documentation for employee management.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "Current API server"
+        }
+    ],
+    "paths": {
+        "/employees": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "List employees",
+                "operationId": "de35b91f1dd30a3681933082cceead89",
+                "responses": {
+                    "200": {
+                        "description": "Employee list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeListResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Create an employee",
+                "operationId": "46e0471b09055dcdef9b35582d819236",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EmployeeInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Employee created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employees/search": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Search and sort employees",
+                "operationId": "06e16b647087a765f7df90fc0ba168b2",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "full_name",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "1 = active, 2 = inactive, 3 = suspended",
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                1,
+                                2,
+                                3
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "1 = newest, 2 = salary descending, 3 = salary ascending",
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                1,
+                                2,
+                                3
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Search results",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeListResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employees/withDeleted": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "List employees including deleted records",
+                "operationId": "447623a50c122164a7d7d2615d2770eb",
+                "responses": {
+                    "200": {
+                        "description": "Employee list including deleted records",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeListResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employees/{employee}": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Get an employee",
+                "operationId": "5806382050575685b6fd09f1c21577f7",
+                "parameters": [
+                    {
+                        "name": "employee",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Employee not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFoundError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Delete an employee (soft delete)",
+                "operationId": "5c177388dca61ca9dcfa1e3c3f7e5e83",
+                "parameters": [
+                    {
+                        "name": "employee",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeleteEmployeeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Employee not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFoundError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employees/{id}": {
+            "put": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Update an employee",
+                "operationId": "c741878debe7a8fb626d9d2b2c69fec9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "full_name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "salary": {
+                                        "type": "number"
+                                    },
+                                    "hire_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "status": {
+                                        "type": "integer",
+                                        "enum": [
+                                            1,
+                                            2,
+                                            3
+                                        ]
+                                    },
+                                    "photo": {
+                                        "type": "string",
+                                        "format": "uri"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Employee updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateEmployeeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Employee not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFoundError"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Employee": {
+                "required": [
+                    "id",
+                    "full_name",
+                    "email",
+                    "salary",
+                    "hire_date",
+                    "status"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "full_name": {
+                        "type": "string",
+                        "example": "Khalil Zerzour"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "khalil@example.com"
+                    },
+                    "salary": {
+                        "type": "number",
+                        "format": "double",
+                        "example": 45000
+                    },
+                    "hire_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2026-08-14"
+                    },
+                    "status": {
+                        "description": "1 = active, 2 = inactive, 3 = suspended",
+                        "type": "integer",
+                        "example": 1,
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ]
+                    },
+                    "photo": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://example.com/photo.jpg",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "EmployeeInput": {
+                "required": [
+                    "full_name",
+                    "email",
+                    "salary",
+                    "hire_date",
+                    "status"
+                ],
+                "properties": {
+                    "full_name": {
+                        "type": "string",
+                        "example": "Khalil Zerzour"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "khalil@example.com"
+                    },
+                    "salary": {
+                        "type": "number",
+                        "example": 45000
+                    },
+                    "hire_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2026-08-14"
+                    },
+                    "status": {
+                        "type": "integer",
+                        "example": 1,
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ]
+                    },
+                    "photo": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "EmployeeResponse": {
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/Employee"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Employee retrieved successfully"
+                    }
+                },
+                "type": "object"
+            },
+            "EmployeeListResponse": {
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Employee"
+                        }
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Employees retrieved successfully"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateEmployeeResponse": {
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "description": "Whether the update succeeded",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Employee updated successfully"
+                    }
+                },
+                "type": "object"
+            },
+            "DeleteEmployeeResponse": {
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "example": null,
+                        "nullable": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Employee deleted successfully"
+                    }
+                },
+                "type": "object"
+            },
+            "ValidationError": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "The email field must be a valid email address."
+                    },
+                    "errors": {
+                        "properties": {
+                            "email": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "example": [
+                                    "The email field must be a valid email address."
+                                ]
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "NotFoundError": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "No query results for model [App\\Models\\Employee] 999"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Employees",
+            "description": "Employees"
+        }
+    ]
+}
